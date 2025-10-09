@@ -1,0 +1,28 @@
+# GhanaRentals Environment Variables
+# Copy this file to .env and fill in your actual values
+
+# Flask Configuration
+SECRET_KEY=your-super-secret-production-key-change-this
+FLASK_ENV=production
+FLASK_APP=app.py
+
+# Database Configuration
+DB_HOST=your-database-host
+DB_USER=your-database-username
+DB_PASSWORD=your-database-password
+DB_NAME=ghana_rentals
+DB_PORT=3306
+
+# Email Configuration (Optional)
+MAIL_SERVER=smtp.gmail.com
+MAIL_PORT=587
+MAIL_USERNAME=your-email@gmail.com
+MAIL_PASSWORD=your-app-password
+MAIL_DEFAULT_SENDER=your-email@gmail.com
+
+# Render Specific
+RENDER=true
+PORT=10000
+
+# Security
+SESSION_COOKIE_SECURE=true

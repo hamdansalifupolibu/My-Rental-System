@@ -1,0 +1,37 @@
+# Core Flask Framework
+Flask==2.3.3
+Werkzeug==2.3.7
+
+# Database Drivers
+mysql-connector-python==8.1.0
+PyMySQL==1.1.0
+psycopg2-binary==2.9.7
+
+# Production Server
+gunicorn==21.2.0
+
+# Environment Variables
+python-dotenv==1.0.0
+
+# Security
+Flask-CORS==4.0.0
+cryptography==41.0.4
+
+# File Upload & Processing
+Pillow==10.0.0
+python-magic==0.4.27
+
+# Email Support
+Flask-Mail==0.9.1
+
+# Real-time Features (for future implementation)
+Flask-SocketIO==5.3.6
+python-socketio==5.8.0
+
+# Utilities
+requests==2.31.0
+urllib3==2.0.4
+
+# Development & Testing
+pytest==7.4.0
+pytest-flask==1.2.0

@@ -1,0 +1,1132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - GhanaRentals</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        .admin-dashboard {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px 0;
+        }
+
+        /* Modern Navigation Header */
+        .admin-nav {
+            background: linear-gradient(135deg, rgba(44, 62, 80, 0.95) 0%, rgba(52, 73, 94, 0.95) 100%);
+            backdrop-filter: blur(20px);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+            border-bottom: 3px solid transparent;
+            border-image: linear-gradient(135deg, #e67e22, #f39c12, #e74c3c);
+            border-image-slice: 1;
+            margin-bottom: 40px;
+            padding: 15px 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .admin-nav::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+            transition: left 0.6s;
+        }
+
+        .admin-nav:hover::before {
+            left: 100%;
+        }
+
+        .nav-brand {
+            font-size: 1.8rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #e67e22, #f39c12);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 0;
+            transition: all 0.3s ease;
+        }
+
+        .nav-brand:hover {
+            transform: translateY(-2px);
+        }
+
+        .brand-icon {
+            font-size: 2rem;
+            background: linear-gradient(135deg, #e67e22, #f39c12);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .nav-menu {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+
+        .nav-item {
+            position: relative;
+        }
+
+        .nav-link {
+            color: rgba(255, 255, 255, 0.9) !important;
+            text-decoration: none;
+            padding: 12px 20px !important;
+            border-radius: 12px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .nav-link::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+            transition: left 0.5s;
+        }
+
+        .nav-link:hover::before {
+            left: 100%;
+        }
+
+        .nav-link:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            color: white !important;
+        }
+
+        .nav-icon {
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+        }
+
+        .nav-link:hover .nav-icon {
+            transform: scale(1.2);
+        }
+
+        .nav-indicator {
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 3px;
+            background: linear-gradient(135deg, #e67e22, #f39c12);
+            border-radius: 3px;
+            transition: all 0.3s ease;
+        }
+
+        .nav-link:hover .nav-indicator {
+            width: 80%;
+        }
+
+        /* Dashboard Container */
+        .dashboard-container {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 25px;
+            padding: 50px;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            margin: 0 auto;
+            max-width: 1200px;
+        }
+
+        .header-section {
+            text-align: center;
+            margin-bottom: 50px;
+            padding: 40px 0;
+            position: relative;
+            background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.05) 100%);
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .dashboard-title {
+            font-size: 3.5rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #e67e22, #f39c12, #2c3e50);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 20px;
+        }
+
+        .welcome-container {
+            display: inline-flex;
+            align-items: center;
+            gap: 15px;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 15px 25px;
+            border-radius: 50px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            backdrop-filter: blur(10px);
+        }
+
+        /* Modern Metrics Styles */
+        .metrics-section {
+            margin: 50px 0;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #e67e22, #f39c12, #2c3e50);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 10px;
+        }
+
+        .section-subtitle {
+            color: #6c757d;
+            font-size: 1.1rem;
+            font-weight: 500;
+        }
+
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            margin-bottom: 50px;
+        }
+
+        .metric-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .metric-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+        }
+
+        .metric-card.user-metrics::before {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+        }
+
+        .metric-card.property-metrics::before {
+            background: linear-gradient(135deg, #27ae60, #2ecc71);
+        }
+
+        .metric-card.report-metrics::before {
+            background: linear-gradient(135deg, #e67e22, #f39c12);
+        }
+
+        .metric-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
+        }
+
+        .metric-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .metric-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: white;
+        }
+
+        .user-metrics .metric-icon {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+        }
+
+        .property-metrics .metric-icon {
+            background: linear-gradient(135deg, #27ae60, #2ecc71);
+        }
+
+        .report-metrics .metric-icon {
+            background: linear-gradient(135deg, #e67e22, #f39c12);
+        }
+
+        .metric-title h3 {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: #2c3e50;
+            margin: 0;
+        }
+
+        .metric-title p {
+            color: #6c757d;
+            margin: 0;
+            font-size: 0.9rem;
+        }
+
+        .metric-stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: 20px;
+            border-radius: 15px;
+            background: rgba(255, 255, 255, 0.8);
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+        }
+
+        .stat-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .stat-item.primary { border-left: 4px solid #3498db; }
+        .stat-item.success { border-left: 4px solid #27ae60; }
+        .stat-item.info { border-left: 4px solid #17a2b8; }
+        .stat-item.warning { border-left: 4px solid #f39c12; }
+        .stat-item.danger { border-left: 4px solid #e74c3c; }
+
+        .stat-value {
+            font-size: 2.2rem;
+            font-weight: 800;
+            margin-bottom: 5px;
+        }
+
+        .stat-item.primary .stat-value { color: #3498db; }
+        .stat-item.success .stat-value { color: #27ae60; }
+        .stat-item.info .stat-value { color: #17a2b8; }
+        .stat-item.warning .stat-value { color: #f39c12; }
+        .stat-item.danger .stat-value { color: #e74c3c; }
+
+        .stat-label {
+            font-size: 0.9rem;
+            color: #6c757d;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .stat-trend {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+            font-size: 0.8rem;
+            color: #95a5a6;
+        }
+
+        .no-data {
+            text-align: center;
+            padding: 40px 20px;
+            color: #bdc3c7;
+        }
+
+        .no-data i {
+            font-size: 3rem;
+            margin-bottom: 15px;
+        }
+
+        .metric-footer {
+            margin-top: 25px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(0, 0, 0, 0.1);
+        }
+
+        .metric-action {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            text-decoration: none;
+            color: #3498db;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .metric-action:hover {
+            color: #2980b9;
+            transform: translateX(5px);
+        }
+
+        /* Quick Actions Panel */
+        .quick-actions-panel {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .panel-header {
+            margin-bottom: 25px;
+        }
+
+        .panel-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #2c3e50;
+            margin: 0;
+        }
+
+        .actions-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .action-card {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 25px;
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 15px;
+            text-decoration: none;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .action-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+            transition: left 0.6s;
+        }
+
+        .action-card:hover::before {
+            left: 100%;
+        }
+
+        .action-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        .report-action { border-left: 4px solid #e67e22; }
+        .user-action { border-left: 4px solid #3498db; }
+        .property-action { border-left: 4px solid #27ae60; }
+        .add-action { border-left: 4px solid #9b59b6; }
+
+        .action-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+            color: white;
+            flex-shrink: 0;
+        }
+
+        .report-action .action-icon { background: linear-gradient(135deg, #e67e22, #f39c12); }
+        .user-action .action-icon { background: linear-gradient(135deg, #3498db, #2980b9); }
+        .property-action .action-icon { background: linear-gradient(135deg, #27ae60, #2ecc71); }
+        .add-action .action-icon { background: linear-gradient(135deg, #9b59b6, #8e44ad); }
+
+        .action-content h4 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #2c3e50;
+            margin: 0 0 5px 0;
+        }
+
+        .action-content p {
+            font-size: 0.9rem;
+            color: #6c757d;
+            margin: 0;
+        }
+
+        .action-arrow {
+            margin-left: auto;
+            color: #bdc3c7;
+            transition: all 0.3s ease;
+        }
+
+        .action-card:hover .action-arrow {
+            color: #3498db;
+            transform: translateX(5px);
+        }
+
+        @media (max-width: 768px) {
+            .nav-menu {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .nav-link {
+                justify-content: center;
+                width: 100%;
+            }
+
+            .metrics-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .metric-stats {
+                grid-template-columns: 1fr;
+            }
+
+            .actions-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body class="admin-dashboard">
+    <!-- Modern Navigation Header -->
+    <nav class="navbar navbar-expand-lg navbar-dark admin-nav">
+        <div class="container">
+            <!-- Brand -->
+            <a class="navbar-brand nav-brand" href="/">
+                <i class="fas fa-home brand-icon"></i>
+                GhanaRentals
+            </a>
+
+            <!-- Navigation Menu -->
+            <div class="navbar-nav ms-auto">
+                <a class="nav-link" href="/admin/add-house">
+                    <i class="fas fa-plus-circle me-1"></i>Add House
+                </a>
+                <a class="nav-link" href="/admin/manage-houses">
+                    <i class="fas fa-edit me-1"></i>Manage Houses
+                </a>
+                <a class="nav-link" href="/admin/manage-users">
+                    <i class="fas fa-users me-1"></i>Manage Users
+                </a>
+                <a class="nav-link" href="/admin/reports">
+                    <i class="fas fa-flag me-1"></i>Manage Reports
+                </a>
+                <a class="nav-link" href="/">
+                    <i class="fas fa-home me-1"></i>Home
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="dashboard-container">
+            <!-- Header Section -->
+            <div class="header-section">
+                <h1 class="dashboard-title">Admin Dashboard</h1>
+                <div class="welcome-container">
+                    <div class="welcome-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <p class="welcome-text">Welcome to the admin panel! Manage your properties and users efficiently.</p>
+                </div>
+            </div>
+
+            <!-- Flash Messages -->
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <div class="alert alert-{{ 'success' if category == 'success' else 'danger' }} admin-alert">
+                            <i class="fas fa-{{ 'check-circle' if category == 'success' else 'exclamation-triangle' }} me-2"></i>
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+
+            <!-- Modern Metrics Dashboard -->
+            <div class="metrics-section">
+                <div class="section-header">
+                    <h2 class="section-title">
+                        <i class="fas fa-chart-line me-3"></i>Dashboard Analytics
+                    </h2>
+                    <p class="section-subtitle">Real-time insights and performance metrics</p>
+                </div>
+
+                <div class="metrics-grid">
+                    <!-- User Metrics Card -->
+                    <div class="metric-card user-metrics">
+                        <div class="metric-header">
+                            <div class="metric-icon">
+                                <i class="fas fa-users"></i>
+                            </div>
+                            <div class="metric-title">
+                                <h3>User Analytics</h3>
+                                <p>Platform engagement & growth</p>
+                            </div>
+                        </div>
+                        <div class="metric-body">
+                            {% if metrics.user_metrics %}
+                            <div class="metric-stats">
+                                <div class="stat-item primary">
+                                    <div class="stat-value">{{ metrics.user_metrics.total_users }}</div>
+                                    <div class="stat-label">Total Users</div>
+                                    <div class="stat-trend">
+                                        <i class="fas fa-users"></i>
+                                        <span>All Time</span>
+                                    </div>
+                                </div>
+                                <div class="stat-item success">
+                                    <div class="stat-value">{{ metrics.user_metrics.new_users_this_month }}</div>
+                                    <div class="stat-label">New This Month</div>
+                                    <div class="stat-trend">
+                                        <i class="fas fa-arrow-up"></i>
+                                        <span>Monthly Growth</span>
+                                    </div>
+                                </div>
+                                <div class="stat-item info">
+                                    <div class="stat-value">{{ metrics.user_metrics.active_users }}</div>
+                                    <div class="stat-label">Active Users</div>
+                                    <div class="stat-trend">
+                                        <i class="fas fa-user-check"></i>
+                                        <span>Last 30 Days</span>
+                                    </div>
+                                </div>
+                                <div class="stat-item warning">
+                                    <div class="stat-value">
+                                        {% if metrics.user_metrics.role_counts %}
+                                            {{ metrics.user_metrics.role_counts.get('landlord', 0) }}
+                                        {% else %}
+                                            0
+                                        {% endif %}
+                                    </div>
+                                    <div class="stat-label">Landlords</div>
+                                    <div class="stat-trend">
+                                        <i class="fas fa-user-tie"></i>
+                                        <span>Property Owners</span>
+                                    </div>
+                                </div>
+                            </div>
+                            {% else %}
+                            <div class="no-data">
+                                <i class="fas fa-chart-bar"></i>
+                                <p>No user data available</p>
+                            </div>
+                            {% endif %}
+                        </div>
+                        <div class="metric-footer">
+                            <a href="/admin/manage-users" class="metric-action">
+                                <span>View All Users</span>
+                                <i class="fas fa-arrow-right"></i>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Property Metrics Card -->
+                    <div class="metric-card property-metrics">
+                        <div class="metric-header">
+                            <div class="metric-icon">
+                                <i class="fas fa-home"></i>
+                            </div>
+                            <div class="metric-title">
+                                <h3>Property Analytics</h3>
+                                <p>Listing performance & occupancy</p>
+                            </div>
+                        </div>
+                        <div class="metric-body">
+                            {% if metrics.property_metrics %}
+                            <div class="metric-stats">
+                                <div class="stat-item success">
+                                    <div class="stat-value">{{ metrics.property_metrics.total_properties }}</div>
+                                    <div class="stat-label">Total Properties</div>
+                                    <div class="stat-trend">
+                                        <i class="fas fa-building"></i>
+                                        <span>All Listings</span>
+                                    </div>
+                                </div>
+                                <div class="stat-item primary">
+                                    <div class="stat-value">{{ metrics.property_metrics.new_listings }}</div>
+                                    <div class="stat-label">New This Month</div>
+                                    <div class="stat-trend">
+                                        <i class="fas fa-plus-circle"></i>
+                                        <span>Monthly Additions</span>
+                                    </div>
+                                </div>
+                                <div class="stat-item info">
+                                    <div class="stat-value">
+                                        {% if metrics.property_metrics.availability %}
+                                            {{ metrics.property_metrics.availability.available }}
+                                        {% else %}
+                                            0
+                                        {% endif %}
+                                    </div>
+                                    <div class="stat-label">Available</div>
+                                    <div class="stat-trend">
+                                        <i class="fas fa-check-circle"></i>
+                                        <span>Ready to Rent</span>
+                                    </div>
+                                </div>
+                                <div class="stat-item warning">
+                                    <div class="stat-value">
+                                        {% if metrics.property_metrics.occupancy %}
+                                            {{ metrics.property_metrics.occupancy.occupancy_rate }}%
+                                        {% else %}
+                                            0%
+                                        {% endif %}
+                                    </div>
+                                    <div class="stat-label">Occupancy Rate</div>
+                                    <div class="stat-trend">
+                                        <i class="fas fa-chart-pie"></i>
+                                        <span>Utilization</span>
+                                    </div>
+                                </div>
+                            </div>
+                            {% else %}
+                            <div class="no-data">
+                                <i class="fas fa-home"></i>
+                                <p>No property data available</p>
+                            </div>
+                            {% endif %}
+                        </div>
+                        <div class="metric-footer">
+                            <a href="/admin/manage-houses" class="metric-action">
+                                <span>Manage Properties</span>
+                                <i class="fas fa-arrow-right"></i>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Report Metrics Card -->
+                    <div class="metric-card report-metrics">
+                        <div class="metric-header">
+                            <div class="metric-icon">
+                                <i class="fas fa-flag"></i>
+                            </div>
+                            <div class="metric-title">
+                                <h3>Support Analytics</h3>
+                                <p>User reports & resolutions</p>
+                            </div>
+                        </div>
+                        <div class="metric-body">
+                            {% if metrics.report_metrics %}
+                            <div class="metric-stats">
+                                <div class="stat-item warning">
+                                    <div class="stat-value">{{ metrics.report_metrics.total_reports }}</div>
+                                    <div class="stat-label">Total Reports</div>
+                                    <div class="stat-trend">
+                                        <i class="fas fa-inbox"></i>
+                                        <span>All Time</span>
+                                    </div>
+                                </div>
+                                <div class="stat-item danger">
+                                    <div class="stat-value">{{ metrics.report_metrics.critical_pending }}</div>
+                                    <div class="stat-label">Critical Pending</div>
+                                    <div class="stat-trend">
+                                        <i class="fas fa-exclamation-triangle"></i>
+                                        <span>Requires Attention</span>
+                                    </div>
+                                </div>
+                                <div class="stat-item info">
+                                    <div class="stat-value">
+                                        {% for status in metrics.report_metrics.reports_by_status %}
+                                            {% if status.status == 'pending' %}
+                                                {{ status.count }}
+                                            {% endif %}
+                                        {% endfor %}
+                                    </div>
+                                    <div class="stat-label">Pending Reports</div>
+                                    <div class="stat-trend">
+                                        <i class="fas fa-clock"></i>
+                                        <span>Awaiting Response</span>
+                                    </div>
+                                </div>
+                                <div class="stat-item success">
+                                    <div class="stat-value">
+                                        {% for status in metrics.report_metrics.reports_by_status %}
+                                            {% if status.status == 'resolved' %}
+                                                {{ status.count }}
+                                            {% endif %}
+                                        {% endfor %}
+                                    </div>
+                                    <div class="stat-label">Resolved</div>
+                                    <div class="stat-trend">
+                                        <i class="fas fa-check-double"></i>
+                                        <span>Completed</span>
+                                    </div>
+                                </div>
+                            </div>
+                            {% else %}
+                            <div class="no-data">
+                                <i class="fas fa-flag"></i>
+                                <p>No report data available</p>
+                            </div>
+                            {% endif %}
+                        </div>
+                        <div class="metric-footer">
+                            <a href="/admin/reports" class="metric-action">
+                                <span>View All Reports</span>
+                                <i class="fas fa-arrow-right"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Advanced Analytics Section -->
+                <div class="section-header" style="margin-top: 60px;">
+                    <h2 class="section-title">
+                        <i class="fas fa-chart-bar me-3"></i>Advanced Analytics
+                    </h2>
+                    <p class="section-subtitle">In-depth business insights and performance metrics</p>
+                </div>
+
+                <div class="metrics-grid">
+                    <!-- Revenue Analytics Card -->
+                    <div class="metric-card" style="border-left: 4px solid #27ae60;">
+                        <div class="metric-header">
+                            <div class="metric-icon" style="background: linear-gradient(135deg, #27ae60, #2ecc71);">
+                                <i class="fas fa-dollar-sign"></i>
+                            </div>
+                            <div class="metric-title">
+                                <h3>Revenue Analytics</h3>
+                                <p>Financial performance and pricing insights</p>
+                            </div>
+                        </div>
+                        <div class="metric-body">
+                            {% if metrics.advanced_metrics.revenue_analytics %}
+                            <div class="metric-stats">
+                                <div class="stat-item success">
+                                    <div class="stat-value">GHS {{ "%.2f"|format(metrics.advanced_metrics.revenue_analytics.revenue_summary.total_revenue or 0) }}</div>
+                                    <div class="stat-label">Total Revenue (30 days)</div>
+                                    <div class="stat-trend">
+                                        <i class="fas fa-chart-line"></i>
+                                        <span>Monthly Income</span>
+                                    </div>
+                                </div>
+                                <div class="stat-item primary">
+                                    <div class="stat-value">GHS {{ "%.2f"|format(metrics.advanced_metrics.revenue_analytics.revenue_summary.avg_monthly_rent or 0) }}</div>
+                                    <div class="stat-label">Avg Monthly Rent</div>
+                                    <div class="stat-trend">
+                                        <i class="fas fa-home"></i>
+                                        <span>Average Price</span>
+                                    </div>
+                                </div>
+                                <div class="stat-item info">
+                                    <div class="stat-value">{{ metrics.advanced_metrics.revenue_analytics.revenue_by_type|length }}</div>
+                                    <div class="stat-label">Property Types</div>
+                                    <div class="stat-trend">
+                                        <i class="fas fa-tags"></i>
+                                        <span>Categories</span>
+                                    </div>
+                                </div>
+                                <div class="stat-item warning">
+                                    <div class="stat-value">{{ metrics.advanced_metrics.revenue_analytics.top_earning_properties|length }}</div>
+                                    <div class="stat-label">Top Performers</div>
+                                    <div class="stat-trend">
+                                        <i class="fas fa-star"></i>
+                                        <span>High Earners</span>
+                                    </div>
+                                </div>
+                            </div>
+                            {% else %}
+                            <div class="no-data">
+                                <i class="fas fa-chart-bar"></i>
+                                <p>No revenue data available</p>
+                            </div>
+                            {% endif %}
+                        </div>
+                        <div class="metric-footer">
+                            <a href="/admin/manage-houses" class="metric-action">
+                                <span>View Revenue Details</span>
+                                <i class="fas fa-arrow-right"></i>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- User Engagement Card -->
+                    <div class="metric-card" style="border-left: 4px solid #3498db;">
+                        <div class="metric-header">
+                            <div class="metric-icon" style="background: linear-gradient(135deg, #3498db, #2980b9);">
+                                <i class="fas fa-users"></i>
+                            </div>
+                            <div class="metric-title">
+                                <h3>User Engagement</h3>
+                                <p>User activity and retention metrics</p>
+                            </div>
+                        </div>
+                        <div class="metric-body">
+                            {% if metrics.advanced_metrics.user_engagement %}
+                            <div class="metric-stats">
+                                <div class="stat-item primary">
+                                    <div class="stat-value">{{ metrics.advanced_metrics.user_engagement.engagement_summary.active_users or 0 }}</div>
+                                    <div class="stat-label">Active Users (30 days)</div>
+                                    <div class="stat-trend">
+                                        <i class="fas fa-user-check"></i>
+                                        <span>Engaged Users</span>
+                                    </div>
+                                </div>
+                                <div class="stat-item success">
+                                    <div class="stat-value">{{ "%.1f"|format(metrics.advanced_metrics.user_engagement.engagement_summary.avg_engagement or 0) }}</div>
+                                    <div class="stat-label">Avg Engagement Score</div>
+                                    <div class="stat-trend">
+                                        <i class="fas fa-chart-pie"></i>
+                                        <span>Activity Level</span>
+                                    </div>
+                                </div>
+                                <div class="stat-item info">
+                                    <div class="stat-value">{{ metrics.advanced_metrics.user_engagement.engagement_summary.total_logins or 0 }}</div>
+                                    <div class="stat-label">Total Logins</div>
+                                    <div class="stat-trend">
+                                        <i class="fas fa-sign-in-alt"></i>
+                                        <span>Login Activity</span>
+                                    </div>
+                                </div>
+                                <div class="stat-item warning">
+                                    <div class="stat-value">{{ "%.1f"|format(metrics.advanced_metrics.user_engagement.engagement_summary.avg_session_duration or 0) }}m</div>
+                                    <div class="stat-label">Avg Session Duration</div>
+                                    <div class="stat-trend">
+                                        <i class="fas fa-clock"></i>
+                                        <span>Time on Site</span>
+                                    </div>
+                                </div>
+                            </div>
+                            {% else %}
+                            <div class="no-data">
+                                <i class="fas fa-users"></i>
+                                <p>No engagement data available</p>
+                            </div>
+                            {% endif %}
+                        </div>
+                        <div class="metric-footer">
+                            <a href="/admin/manage-users" class="metric-action">
+                                <span>View User Analytics</span>
+                                <i class="fas fa-arrow-right"></i>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Property Performance Card -->
+                    <div class="metric-card" style="border-left: 4px solid #e67e22;">
+                        <div class="metric-header">
+                            <div class="metric-icon" style="background: linear-gradient(135deg, #e67e22, #f39c12);">
+                                <i class="fas fa-home"></i>
+                            </div>
+                            <div class="metric-title">
+                                <h3>Property Performance</h3>
+                                <p>Property views, searches, and conversions</p>
+                            </div>
+                        </div>
+                        <div class="metric-body">
+                            {% if metrics.advanced_metrics.property_performance %}
+                            <div class="metric-stats">
+                                <div class="stat-item primary">
+                                    <div class="stat-value">{{ metrics.advanced_metrics.property_performance.performance_summary.total_views or 0 }}</div>
+                                    <div class="stat-label">Total Views (30 days)</div>
+                                    <div class="stat-trend">
+                                        <i class="fas fa-eye"></i>
+                                        <span>Property Views</span>
+                                    </div>
+                                </div>
+                                <div class="stat-item success">
+                                    <div class="stat-value">{{ metrics.advanced_metrics.property_performance.performance_summary.total_searches or 0 }}</div>
+                                    <div class="stat-label">Total Searches</div>
+                                    <div class="stat-trend">
+                                        <i class="fas fa-search"></i>
+                                        <span>Search Activity</span>
+                                    </div>
+                                </div>
+                                <div class="stat-item info">
+                                    <div class="stat-value">{{ metrics.advanced_metrics.property_performance.performance_summary.total_contacts or 0 }}</div>
+                                    <div class="stat-label">Total Contacts</div>
+                                    <div class="stat-trend">
+                                        <i class="fas fa-phone"></i>
+                                        <span>Lead Generation</span>
+                                    </div>
+                                </div>
+                                <div class="stat-item warning">
+                                    <div class="stat-value">{{ "%.1f"|format(metrics.advanced_metrics.property_performance.performance_summary.avg_views_per_property or 0) }}</div>
+                                    <div class="stat-label">Avg Views/Property</div>
+                                    <div class="stat-trend">
+                                        <i class="fas fa-chart-bar"></i>
+                                        <span>Per Property</span>
+                                    </div>
+                                </div>
+                            </div>
+                            {% else %}
+                            <div class="no-data">
+                                <i class="fas fa-home"></i>
+                                <p>No performance data available</p>
+                            </div>
+                            {% endif %}
+                        </div>
+                        <div class="metric-footer">
+                            <a href="/admin/manage-houses" class="metric-action">
+                                <span>View Performance Details</span>
+                                <i class="fas fa-arrow-right"></i>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Geographic Analytics Card -->
+                    <div class="metric-card" style="border-left: 4px solid #9b59b6;">
+                        <div class="metric-header">
+                            <div class="metric-icon" style="background: linear-gradient(135deg, #9b59b6, #8e44ad);">
+                                <i class="fas fa-map-marker-alt"></i>
+                            </div>
+                            <div class="metric-title">
+                                <h3>Geographic Analytics</h3>
+                                <p>Regional performance and demand patterns</p>
+                            </div>
+                        </div>
+                        <div class="metric-body">
+                            {% if metrics.advanced_metrics.geographic_analytics %}
+                            <div class="metric-stats">
+                                <div class="stat-item primary">
+                                    <div class="stat-value">{{ metrics.advanced_metrics.geographic_analytics.regional_performance|length }}</div>
+                                    <div class="stat-label">Active Regions</div>
+                                    <div class="stat-trend">
+                                        <i class="fas fa-map"></i>
+                                        <span>Coverage Areas</span>
+                                    </div>
+                                </div>
+                                <div class="stat-item success">
+                                    <div class="stat-value">{{ metrics.advanced_metrics.geographic_analytics.top_regions|length }}</div>
+                                    <div class="stat-label">Top Performing Regions</div>
+                                    <div class="stat-trend">
+                                        <i class="fas fa-trophy"></i>
+                                        <span>High Demand</span>
+                                    </div>
+                                </div>
+                                <div class="stat-item info">
+                                    <div class="stat-value">{{ metrics.advanced_metrics.geographic_analytics.price_analysis|length }}</div>
+                                    <div class="stat-label">Price Analysis Points</div>
+                                    <div class="stat-trend">
+                                        <i class="fas fa-dollar-sign"></i>
+                                        <span>Price Insights</span>
+                                    </div>
+                                </div>
+                                <div class="stat-item warning">
+                                    <div class="stat-value">{{ metrics.advanced_metrics.geographic_analytics.regional_trends|length }}</div>
+                                    <div class="stat-label">Trend Data Points</div>
+                                    <div class="stat-trend">
+                                        <i class="fas fa-chart-line"></i>
+                                        <span>Market Trends</span>
+                                    </div>
+                                </div>
+                            </div>
+                            {% else %}
+                            <div class="no-data">
+                                <i class="fas fa-map-marker-alt"></i>
+                                <p>No geographic data available</p>
+                            </div>
+                            {% endif %}
+                        </div>
+                        <div class="metric-footer">
+                            <a href="/admin/manage-houses" class="metric-action">
+                                <span>View Geographic Data</span>
+                                <i class="fas fa-arrow-right"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Actions Panel -->
+            <div class="quick-actions-panel">
+                <div class="panel-header">
+                    <h3 class="panel-title">
+                        <i class="fas fa-bolt me-2"></i>Quick Actions
+                    </h3>
+                </div>
+                <div class="actions-grid">
+                    <a href="/admin/reports" class="action-card report-action">
+                        <div class="action-icon">
+                            <i class="fas fa-flag"></i>
+                        </div>
+                        <div class="action-content">
+                            <h4>Manage Reports</h4>
+                            <p>Review and resolve user reports</p>
+                        </div>
+                        <div class="action-arrow">
+                            <i class="fas fa-chevron-right"></i>
+                        </div>
+                    </a>
+
+                    <a href="/admin/manage-users" class="action-card user-action">
+                        <div class="action-icon">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <div class="action-content">
+                            <h4>Manage Users</h4>
+                            <p>View and manage all users</p>
+                        </div>
+                        <div class="action-arrow">
+                            <i class="fas fa-chevron-right"></i>
+                        </div>
+                    </a>
+
+                    <a href="/admin/manage-houses" class="action-card property-action">
+                        <div class="action-icon">
+                            <i class="fas fa-home"></i>
+                        </div>
+                        <div class="action-content">
+                            <h4>Manage Houses</h4>
+                            <p>Edit and manage properties</p>
+                        </div>
+                        <div class="action-arrow">
+                            <i class="fas fa-chevron-right"></i>
+                        </div>
+                    </a>
+
+                    <a href="/admin/add-house" class="action-card add-action">
+                        <div class="action-icon">
+                            <i class="fas fa-plus-circle"></i>
+                        </div>
+                        <div class="action-content">
+                            <h4>Add House</h4>
+                            <p>Create new property listing</p>
+                        </div>
+                        <div class="action-arrow">
+                            <i class="fas fa-chevron-right"></i>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

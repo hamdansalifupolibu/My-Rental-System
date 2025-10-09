@@ -1,0 +1,43 @@
+# Render deployment configuration for GhanaRentals
+services:
+  - type: web
+    name: ghana-rentals
+    env: python
+    plan: free
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn wsgi:application
+    envVars:
+      - key: FLASK_ENV
+        value: production
+      - key: PYTHON_VERSION
+        value: 3.11.0
+      - key: PORT
+        value: 10000
+      - key: SECRET_KEY
+        generateValue: true
+      - key: DB_HOST
+        fromDatabase:
+          name: ghana-rentals-db
+          property: host
+      - key: DB_USER
+        fromDatabase:
+          name: ghana-rentals-db
+          property: user
+      - key: DB_PASSWORD
+        fromDatabase:
+          name: ghana-rentals-db
+          property: password
+      - key: DB_NAME
+        fromDatabase:
+          name: ghana-rentals-db
+          property: database
+      - key: DB_PORT
+        fromDatabase:
+          name: ghana-rentals-db
+          property: port
+
+databases:
+  - name: ghana-rentals-db
+    plan: free
+    databaseName: ghana_rentals
+    user: ghana_rentals_user
