@@ -1,0 +1,14 @@
+# Environment
+.env
+.venv
+env/
+venv/
+ENV/
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+pip-log.txt
