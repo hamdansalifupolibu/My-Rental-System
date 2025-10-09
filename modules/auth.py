@@ -113,7 +113,7 @@ def login():
 
                     conn.commit()
 
-                    # Track user session and engagement
+                    # Track user session and engagement - FIXED: Proper try-except structure
                     try:
                         from modules.analytics_tracking import track_user_session, update_user_engagement
                         import uuid
@@ -131,6 +131,7 @@ def login():
                         update_user_engagement(user['id'], 'login')
                     except Exception as e:
                         print(f"Error tracking user session: {e}")
+                        # Continue with login even if tracking fails
 
                     # Successful login
                     session['user_id'] = user['id']
