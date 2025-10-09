@@ -264,17 +264,81 @@ def house_detail(house_id):
 
 @user_bp.route('/tenant-dashboard')
 def tenant_dashboard():
+    """Tenant dashboard showing available houses and search functionality"""
     if not session.get('logged_in'):
         flash('Please login to access your dashboard.', 'error')
-        return redirect('/login')
-    return render_template('user/tenant_dashboard.html')
+        return redirect(url_for('auth.login'))
+    
+    conn = get_db_connection()
+    cursor = conn.cursor(dictionary=True)
+    
+    try:
+        # Get available houses for the tenant
+        cursor.execute("""
+            SELECT h.*, r.name as region_name, n.name as neighborhood_name
+            FROM houses h
+            LEFT JOIN regions r ON h.region_id = r.id
+            LEFT JOIN neighborhoods n ON h.neighborhood_id = n.id
+            WHERE h.is_available = TRUE
+            ORDER BY h.created_at DESC
+            LIMIT 12
+        """)
+        available_houses = cursor.fetchall()
+        
+        # Parse image_paths for each house
+        for house in available_houses:
+            if house['image_paths']:
+                try:
+                    if isinstance(house['image_paths'], str):
+                        house['image_paths'] = json.loads(house['image_paths'].replace("'", '"'))
+                except:
+                    house['image_paths'] = [house['image_paths']] if house['image_paths'] else []
+            else:
+                house['image_paths'] = []
+        
+        # Get regions for search filter
+        cursor.execute("SELECT * FROM regions ORDER BY name")
+        regions = cursor.fetchall()
+        
+        # Get user's favorite houses if any
+        cursor.execute("""
+            SELECT h.* FROM houses h
+            JOIN favorites f ON h.id = f.house_id
+            WHERE f.user_id = %s AND h.is_available = TRUE
+        """, (session['user_id'],))
+        favorite_houses = cursor.fetchall()
+        
+        # Parse image_paths for favorites
+        for house in favorite_houses:
+            if house['image_paths']:
+                try:
+                    if isinstance(house['image_paths'], str):
+                        house['image_paths'] = json.loads(house['image_paths'].replace("'", '"'))
+                except:
+                    house['image_paths'] = [house['image_paths']] if house['image_paths'] else []
+            else:
+                house['image_paths'] = []
+                
+    except Exception as e:
+        flash(f'Error loading dashboard: {str(e)}', 'error')
+        available_houses = []
+        regions = []
+        favorite_houses = []
+    finally:
+        cursor.close()
+        conn.close()
+    
+    return render_template('user/tenant_dashboard.html',
+                         available_houses=available_houses,
+                         regions=regions,
+                         favorite_houses=favorite_houses)
 
 @user_bp.route('/user-analytics')
 def user_analytics():
     """User analytics dashboard for tenants"""
     if not session.get('logged_in'):
         flash('Please login to access your analytics.', 'error')
-        return redirect('/login')
+        return redirect(url_for('auth.login'))
     
     try:
         from modules.user_analytics import get_user_activity_analytics
@@ -559,7 +623,7 @@ def chatbot():
                 for prop in properties[:4]:
                     prop_type = get_property_type_display_name(prop['property_type'])
                     response += f"{prop['title']} in {prop['region_name']} ({prop_type}) - GHS {prop['price']}. "
-                response += "Visit our 'Browse Houses' page for more details!"
+                response += f"Visit our '{url_for('user.houses')}' page for more details!"
             else:
                 response = "📝 No properties listed yet. Check back soon or landlords can add properties!"
 
