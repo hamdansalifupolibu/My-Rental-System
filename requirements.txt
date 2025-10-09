@@ -1,6 +1,13 @@
 # Core Flask Framework
+
+
 Flask==2.3.3
 Werkzeug==2.3.7
+psycopg2-binary==2.9.7
+python-dotenv==1.0.0
+PyMySQL==1.1.0
+gunicorn==21.2.0
+mysql-connector-python==8.1.0
 
 # Database Drivers
 mysql-connector-python==8.1.0
@@ -34,4 +41,5 @@ urllib3==2.0.4
 
 # Development & Testing
 pytest==7.4.0
+
 pytest-flask==1.2.0
