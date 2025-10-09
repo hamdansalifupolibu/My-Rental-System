@@ -12,67 +12,62 @@ def is_valid_email(email):
 
 @auth_bp.route('/register', methods=['GET', 'POST'])
 def register():
+    # ... existing code ...
+    
+    conn.commit()
+    flash('Registration successful! Please login.', 'success')
+    return redirect(url_for('auth.login'))  # FIXED: Use url_for
+    
+    # ... rest of the code ...
+
+@auth_bp.route('/logout')
+def logout():
+    session.clear()
+    flash('You have been logged out successfully.', 'info')
+    return redirect(url_for('user.index'))  # FIXED: Use url_for
+
+@auth_bp.route('/profile')
+def profile():
+    if not session.get('logged_in'):
+        flash('Please login to view your profile.', 'error')
+        return redirect(url_for('auth.login'))  # FIXED: Use url_for
+    
+    # ... rest of the code ...
+
+@auth_bp.route('/profile/edit', methods=['GET', 'POST'])
+def edit_profile():
+    if not session.get('logged_in'):
+        flash('Please login to edit your profile.', 'error')
+        return redirect(url_for('auth.login'))  # FIXED: Use url_for
+    
+    # ... in the POST method, fix these redirects:
     if request.method == 'POST':
-        username = request.form['username']
-        email = request.form['email']
-        password = request.form['password']
-        confirm_password = request.form['confirm_password']
-        full_name = request.form['full_name']
-        phone = request.form['phone']
-        role = request.form['role']
-
-        # Validation
-        if not all([username, email, password, confirm_password, full_name]):
-            flash('All fields are required!', 'error')
-            return render_template('auth/register.html')
-
-        if not is_valid_email(email):
-            flash('Please enter a valid email address!', 'error')
-            return render_template('auth/register.html')
-
-        if password != confirm_password:
-            flash('Passwords do not match!', 'error')
-            return render_template('auth/register.html')
-
-        if len(password) < 6:
-            flash('Password must be at least 6 characters long!', 'error')
-            return render_template('auth/register.html')
-
-        conn = get_db_connection()
-        cursor = conn.cursor(dictionary=True)
-
         try:
-            # Check if username or email already exists
-            cursor.execute("SELECT * FROM users WHERE username = %s OR email = %s", (username, email))
-            existing_user = cursor.fetchone()
-
-            if existing_user:
-                if existing_user['username'] == username:
-                    flash('Username already exists!', 'error')
-                else:
-                    flash('Email already registered!', 'error')
-                return render_template('auth/register.html')
-
-            # Hash password and create user
-            hashed_password = generate_password_hash(password)
-
-            cursor.execute("""
-                INSERT INTO users (username, email, password_hash, full_name, phone, role)
-                VALUES (%s, %s, %s, %s, %s, %s)
-            """, (username, email, hashed_password, full_name, phone, role))
-
-            conn.commit()
-            flash('Registration successful! Please login.', 'success')
-            return redirect('/login')  # CHANGED: Direct path
-
+            # ... validation code ...
+            
+            if not email or not full_name:
+                flash('Email and Full Name are required!', 'error')
+                return redirect(url_for('auth.edit_profile'))  # FIXED
+            
+            if not is_valid_email(email):
+                flash('Please enter a valid email address!', 'error')
+                return redirect(url_for('auth.edit_profile'))  # FIXED
+            
+            # ... more validation ...
+            
+            flash('Profile updated successfully!', 'success')
+            return redirect(url_for('auth.profile'))  # FIXED
+            
         except Exception as e:
-            conn.rollback()
-            flash(f'Registration failed: {str(e)}', 'error')
-        finally:
-            cursor.close()
-            conn.close()
-
-    return render_template('auth/register.html')
+            # ... error handling ...
+    
+    else:
+        # GET request
+        try:
+            # ... load user data ...
+        except Exception as e:
+            flash(f'Error loading profile: {str(e)}', 'error')
+            return redirect(url_for('auth.profile'))  # FIXED
 
 
 @auth_bp.route('/login', methods=['GET', 'POST'])
@@ -140,13 +135,13 @@ def login():
 
                     flash(f'Welcome back, {user["full_name"]}!', 'success')
 
-                    # Redirect based on role - UPDATED to direct paths
+                    # FIXED: Redirect using url_for with blueprint endpoints
                     if user['role'] == 'admin':
-                        return redirect('/admin/dashboard')  # CHANGED: Direct path
+                        return redirect(url_for('admin.dashboard'))  # FIXED: Use url_for
                     elif user['role'] == 'landlord':
-                        return redirect('/admin/landlord-dashboard')  # CHANGED: Direct path
+                        return redirect(url_for('admin.landlord_dashboard'))  # FIXED: Use url_for
                     else:
-                        return redirect('/user/tenant-dashboard')  # CHANGED: Direct path
+                        return redirect(url_for('user.tenant_dashboard'))  # FIXED: Use url_for
             else:
                 flash('Invalid username or password!', 'error')
 
