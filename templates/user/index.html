@@ -458,9 +458,9 @@
                         <ul class="dropdown-menu">
                             <li><a class="dropdown-item" href="{{ url_for('profile') }}"><i class="fas fa-user-circle"></i> Profile</a></li>
                             {% if session.role == 'admin' %}
-                            <li><a class="dropdown-item" href="{{ url_for('admin_bp.admin_dashboard') }}"><i class="fas fa-cog"></i> Admin Panel</a></li>
+                            <li><a class="dropdown-item" href="{{ url_for('admin.dashboard') }}"><i class="fas fa-cog"></i> Admin Panel</a></li>
                             {% elif session.role == 'landlord' %}
-                            <li><a class="dropdown-item" href="{{ url_for('admin_bp.landlord_dashboard') }}"><i class="fas fa-building"></i> Landlord Dashboard</a></li>
+                            <li><a class="dropdown-item" href="{{ url_for('admin.landlord_dashboard') }}"><i class="fas fa-building"></i> Landlord Dashboard</a></li>
                             {% else %}
                             <li><a class="dropdown-item" href="{{ url_for('user.tenant_dashboard') }}"><i class="fas fa-search"></i> Tenant Dashboard</a></li>
                             {% endif %}
